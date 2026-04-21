@@ -1,12 +1,27 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, Pressable } from "react-native";
+import { useTheme } from "@/hooks/useTheme";
 
-const SectionHeader = () => {
+type Props = {
+  title: string;
+  onPressSeeAll?: () => void;
+};
+
+export default function SectionHeader({ title, onPressSeeAll }: Props) {
+  const { colors } = useTheme();
+
   return (
-    <View>
-      <Text>SectionHeader</Text>
-    </View>
-  )
-}
+    <View className="flex-row justify-between items-center mb-3">
+      <Text style={{ color: colors.text }} className="text-base font-semibold">
+        {title}
+      </Text>
 
-export default SectionHeader
+      {onPressSeeAll && (
+        <Pressable onPress={onPressSeeAll}>
+          <Text style={{ color: colors.primary }} className="text-xs font-semibold">
+            See All
+          </Text>
+        </Pressable>
+      )}
+    </View>
+  );
+}

@@ -5,7 +5,8 @@ const colors = {
 
   secondary: "#1F2937",
 
-  background: "#F9FAFB",
+  background: "#FFF7ED", // orange-50
+  
   surface: "#FFFFFF",
 
   text: "#111827",
