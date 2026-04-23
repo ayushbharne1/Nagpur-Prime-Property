@@ -1,6 +1,7 @@
 import { View, Text, Image, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@/hooks/useTheme";
+import React from "react";
 
 type Props = {
   item: any;
@@ -9,12 +10,12 @@ type Props = {
   onToggleLike?: () => void;
 };
 
-export default function PropertyCard({
+const PropertyCard = ({
   item,
   variant = "vertical",
   isLiked,
   onToggleLike,
-}: Props) {
+}: Props) => {
   const { colors } = useTheme();
 
   if (variant === "horizontal") {
@@ -84,3 +85,4 @@ export default function PropertyCard({
     </View>
   );
 }
+export default React.memo(PropertyCard);
