@@ -16,15 +16,15 @@ export default function PropertyList({ data, horizontal }: Props) {
       horizontal={horizontal}
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={{
-        paddingRight: horizontal ? 16 : 0,
+        // paddingRight: horizontal ? 20 : 0,
+        // backgroundColor: "red",
+        paddingVertical: 10,
       }}
       renderItem={({ item }) => (
-        <View style={{ marginBottom: horizontal ? 0 : 16 }}>
-          <PropertyCard
-            item={item}
-            variant={horizontal ? "horizontal" : "vertical"}
-          />
-        </View>
+        <PropertyCard
+          item={item}
+          variant={horizontal ? "horizontal" : "vertical"}
+        />
       )}
     />
   );

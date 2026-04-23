@@ -1,4 +1,4 @@
-import SkeletonCard from "@/components/common/SkeletonCard";
+import HomeSkeleton from "@/components/common/HomeSkeleton";
 import CategoryTabs from "@/components/home/CategoryTabs";
 import FeaturedCarousel from "@/components/home/FeaturedCarousel";
 import Header from "@/components/home/Header";
@@ -9,8 +9,11 @@ import PropertyCard from "@/components/property/PropertyCard";
 import { properties } from "@/constants/mockData";
 import { useTheme } from "@/hooks/useTheme";
 import { useCallback, useState, useEffect } from "react";
-import { FlatList, View } from "react-native";
+import { FlatList, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
+import Animated, { FadeInUp } from "react-native-reanimated";
+import SectionHeader from "@/components/common/SectionHeader";
 
 export default function Home() {
   const { colors } = useTheme();
@@ -23,55 +26,49 @@ export default function Home() {
     setTimeout(() => {
       setData(properties);
       setIsLoading(false);
-    }, 1000);
+    }, 1200);
   }, []);
-
-  // 🔥 lazy load
-  const loadMore = () => {
-    if (isLoading) return;
-
-    setData((prev) => [...prev, ...properties]);
-  };
 
   // 🔥 stable render
-  const renderItem = useCallback(({ item }) => {
-    return (
-      <View className="px-4">
-        <PropertyCard item={item} />
-      </View>
-    );
-  }, []);
+  const renderItem = useCallback(
+    ({ item, index }: { item: any; index: number }) => {
+      return (
+        <Animated.View
+          entering={FadeInUp.delay(index * 100)
+            .duration(400)
+            .springify()}
+          style={{ paddingHorizontal: 20 }}
+        >
+          <PropertyCard item={item} />
+        </Animated.View>
+      );
+    },
+    []
+  );
 
   return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: colors.background }}
-    >
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+      <StatusBar style="dark" />
       <Header />
 
       {isLoading ? (
-        // 🔥 Skeleton Loading UI
-        <View className="mt-4">
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
-        </View>
+        // 🔥 Skeleton Loading UI — mirrors the full home screen layout
+        <HomeSkeleton />
       ) : (
         <FlatList
           data={data}
-          keyExtractor={(item, index) => item.id?.toString() || index.toString()}
+          keyExtractor={(item, index) =>
+            item.id?.toString() || index.toString()
+          }
           showsVerticalScrollIndicator={false}
 
           // 🚀 PERFORMANCE
-          initialNumToRender={5}
-          maxToRenderPerBatch={5}
+          initialNumToRender={4}
+          maxToRenderPerBatch={4}
           windowSize={5}
           removeClippedSubviews
 
-          // 🚀 LAZY LOAD
-          onEndReached={loadMore}
-          onEndReachedThreshold={0.5}
-
-          contentContainerStyle={{ paddingBottom: 100 }}
+          contentContainerStyle={{ paddingBottom: 120 }}
 
           // 🔥 HEADER
           ListHeaderComponent={
@@ -80,6 +77,15 @@ export default function Home() {
               <CategoryTabs />
               <FeaturedCarousel data={data} />
               <NearYouSection />
+
+              {/* All Properties section title */}
+              <View style={{ paddingHorizontal: 20, marginTop: 24, marginBottom: 8 }}>
+                <SectionHeader
+                  title="All Properties"
+                  subtitle="Browse our complete listing"
+                  onPressSeeAll={() => {}}
+                />
+              </View>
             </View>
           }
 
@@ -87,9 +93,7 @@ export default function Home() {
           renderItem={renderItem}
 
           // 🔥 FOOTER
-          ListFooterComponent={
-            <RecommendedSection data={data} />
-          }
+          ListFooterComponent={<RecommendedSection data={data} />}
         />
       )}
     </SafeAreaView>

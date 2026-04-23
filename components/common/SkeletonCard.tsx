@@ -5,61 +5,89 @@ import { useTheme } from "@/hooks/useTheme";
 export default function SkeletonCard() {
   const { colors } = useTheme();
 
+  const shimmerColors = [colors.border + "40", colors.surface, colors.border + "40"];
+
   return (
-    <View className="px-4 mb-4">
+    <View
+      style={{
+        marginHorizontal: 20,
+        marginBottom: 16,
+        borderRadius: 20,
+        backgroundColor: colors.surface,
+        padding: 0,
+        overflow: "hidden",
+        shadowColor: colors.shadow,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.06,
+        shadowRadius: 8,
+        elevation: 2,
+      }}
+    >
+      {/* Image placeholder */}
       <Shimmer
-        shimmerColors={[
-          colors.border,
-          colors.surface,
-          colors.border,
-        ]}
+        shimmerColors={shimmerColors}
         style={{
-          height: 180,
-          borderRadius: 12,
-          marginBottom: 10,
+          height: 190,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
         }}
       />
 
-      <Shimmer
-        shimmerColors={[
-          colors.border,
-          colors.surface,
-          colors.border,
-        ]}
-        style={{
-          height: 16,
-          width: "30%",
-          borderRadius: 6,
-          marginBottom: 6,
-        }}
-      />
+      {/* Content area */}
+      <View style={{ padding: 16 }}>
+        {/* Price */}
+        <Shimmer
+          shimmerColors={shimmerColors}
+          style={{
+            height: 20,
+            width: "35%",
+            borderRadius: 8,
+            marginBottom: 10,
+          }}
+        />
 
-      <Shimmer
-        shimmerColors={[
-          colors.border,
-          colors.surface,
-          colors.border,
-        ]}
-        style={{
-          height: 14,
-          width: "70%",
-          borderRadius: 6,
-          marginBottom: 6,
-        }}
-      />
+        {/* Title */}
+        <Shimmer
+          shimmerColors={shimmerColors}
+          style={{
+            height: 16,
+            width: "75%",
+            borderRadius: 8,
+            marginBottom: 8,
+          }}
+        />
 
-      <Shimmer
-        shimmerColors={[
-          colors.border,
-          colors.surface,
-          colors.border,
-        ]}
-        style={{
-          height: 12,
-          width: "50%",
-          borderRadius: 6,
-        }}
-      />
+        {/* Location */}
+        <Shimmer
+          shimmerColors={shimmerColors}
+          style={{
+            height: 14,
+            width: "55%",
+            borderRadius: 8,
+            marginBottom: 12,
+          }}
+        />
+
+        {/* Tags row */}
+        <View style={{ flexDirection: "row", gap: 8 }}>
+          <Shimmer
+            shimmerColors={shimmerColors}
+            style={{
+              height: 28,
+              width: 70,
+              borderRadius: 10,
+            }}
+          />
+          <Shimmer
+            shimmerColors={shimmerColors}
+            style={{
+              height: 28,
+              width: 85,
+              borderRadius: 10,
+            }}
+          />
+        </View>
+      </View>
     </View>
   );
 }
